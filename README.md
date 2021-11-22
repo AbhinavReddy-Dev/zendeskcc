@@ -1,6 +1,6 @@
-### zendeskcc
+# zendeskcc
 
-## Using this project
+### Using this project
 
 1. Clone the project, change into the directory and install the dependencies.
 
