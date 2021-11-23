@@ -1,5 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const { getTicketsPerPg } = require('./tickets/getTickets');
+const { port } = require('./config');
 const pino = require('express-pino-logger')();
 
 const app = express();
@@ -12,6 +14,16 @@ app.get('/api/greeting', (req, res) => {
   res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
 });
 
-app.listen(3001, () =>
-  console.log('Express server is running on localhost:3001')
+
+app.get('/api/getTickets', async (req, res) => {
+  const reqBody = req.query;
+  const data = await getTicketsPerPg(reqBody);
+  res.setHeader('Content-Type', 'application/json');
+  res.send(data);
+});
+
+
+
+app.listen(port, () =>
+  console.log(`Tickets server is running on localhost:${port}`)
 );
