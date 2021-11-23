@@ -1,8 +1,7 @@
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 dotenv.config();
 module.exports = {
-
-  port: process.env.PORT,
+  port: process.env.EXPRESS_PORT,
   userName: process.env.USER_NAME,
-  password: process.env.PASSWORD
+  password: process.env.PASSWORD,
 };

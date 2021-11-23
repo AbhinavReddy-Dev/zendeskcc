@@ -14,6 +14,11 @@ function App() {
     fetch(`/api/greeting?name=${encodeURIComponent(state.name)}`)
       .then((response) => response.json())
       .then((data) => setState(data));
+
+    fetch(`/api/getTickets?perPg=${25}`)
+      .then((response) => response.json())
+      .catch((err) => console.log(err));
+    // .then((data) => setState(data));
   };
 
   return (
