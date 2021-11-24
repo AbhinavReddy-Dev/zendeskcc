@@ -5,20 +5,21 @@ const { port } = require("./config");
 const pino = require("express-pino-logger")();
 
 const app = express();
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(pino);
-
-app.get("/api/greeting", (req, res) => {
-  const name = req.query.name || "World";
-  res.setHeader("Content-Type", "application/json");
-  res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
-});
 
 app.get("/api/getTickets", async (req, res) => {
   const reqBody = req.query;
-  const data = await getTicketsPerPg(reqBody);
-  res.setHeader("Content-Type", "application/json");
-  res.send(data);
+  try {
+    res.setHeader("Content-Type", "application/json");
+    const { data } = await getTicketsPerPg(reqBody);
+    // console.log("getTickets ", data);
+    res.json(data);
+    return res;
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 app.listen(port, () =>
