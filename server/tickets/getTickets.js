@@ -8,7 +8,7 @@ let previousLink = "",
 const getTicketsPerPg = async (reqBody) => {
   const cntPerPg = reqBody.perPg || 15;
   const link = reqBody.link || "";
-  console.log("checking state--->>> ", previousLink, nextLink);
+
   try {
     let ticketsData = await axios.get(
       link === ""
@@ -25,13 +25,30 @@ const getTicketsPerPg = async (reqBody) => {
     );
     previousLink = ticketsData.data.links.prev;
     nextLink = ticketsData.data.links.next;
-    console.log("checking state 2--->>> ", previousLink, nextLink);
 
     return ticketsData;
   } catch (err) {
-    console.log(err);
+    console.log("Error: ", err);
   }
-  return {};
+  return { data: {} };
 };
 
+const getTicketByID = async (reqBody) => {
+  const ticketID = reqBody.tcktId || null;
+  try {
+    let ticketData = await axios.get(urls.getTicketByID(ticketID), {
+      auth: {
+        username: userName,
+        password: password,
+      },
+    });
+
+    return ticketData;
+  } catch (err) {
+    console.log("Error: ", err);
+  }
+  return { data: {} };
+};
+
+exports.getTicketByID = getTicketByID;
 exports.getTicketsPerPg = getTicketsPerPg;
