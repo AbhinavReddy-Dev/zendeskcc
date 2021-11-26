@@ -6,6 +6,7 @@ export const ListTickets = ({ tickets, handleSelectTicket }) => {
 
   useEffect(() => {
     setStateTickets(tickets);
+    // eslint-disable-next-line
   }, []);
 
   return (

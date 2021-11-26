@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 
 export const TicketCard = ({ ticket = {}, selectTicket }) => {
-  // console.log(ticket.tags);
   const [ticketState, setTicketState] = useState({});
 
   useEffect(() => {
     setTicketState(ticket);
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -13,25 +13,33 @@ export const TicketCard = ({ ticket = {}, selectTicket }) => {
       style={{
         display: "flex",
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "space-around",
         padding: "5px 10px",
-        // margin:'',
         textAlign: "left",
         maxWidth: "100%",
         borderRadius: "5px",
-        // border: "1px solid white",
         margin: "2px 0",
         backgroundColor: "#3D2C8D",
         cursor: "pointer",
       }}
       onClick={() => selectTicket(ticketState)}
     >
-      <p style={{ color: "#fff", width: "20px" }}> {ticketState.id}</p>
-      <p style={{ color: "#fff", width: "40px", fontStyle: "oblique" }}>
+      <p style={{ color: "#fff", width: "25px" }}> {ticketState.id}</p>
+      <p
+        style={{
+          color: "#fff",
+          width: "60px",
+          fontStyle: "oblique",
+          textAlign: "center",
+        }}
+      >
         {ticketState.status}
       </p>
 
-      <p style={{ color: "#fff", width: "70%" }}> {ticketState.subject}</p>
+      <p style={{ color: "#fff", width: "65%" }}> {ticketState.subject}</p>
+      <p style={{ color: "#fff", fontSize: "12px", maxWidth: "100px" }}>
+        {new Date(ticketState.created_at).toDateString().slice(3)}
+      </p>
     </div>
   );
 };

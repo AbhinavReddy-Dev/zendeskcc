@@ -12,19 +12,27 @@ export const Tickets = () => {
     tickets: [],
     hasMore: true,
     currentPage: 1,
-
     ticketsLoading: false,
     errorTickets: false,
   });
+
+  const [currPage, setCurrPage] = useState(1);
 
   const [singleTicketObj, setSingleTicketObj] = useState({
     singleTicketView: false,
     singleTicket: {},
   });
 
-  function setStateFromRes(res) {
-    // console.log(res.tickets);
-    if (res.tickets) {
+  function handleStateFromResError() {
+    setState({
+      ...state,
+      errorTickets: true,
+      ticketsLoading: false,
+      hasMore: false,
+    });
+  }
+  function handleStateUpdateFromRes(res) {
+    if (res) {
       setState({
         ...state,
         tickets: res.tickets,
@@ -33,16 +41,36 @@ export const Tickets = () => {
         errorTickets: false,
       });
     } else {
-      setState({
-        ...state,
-        errorTickets: true,
-        ticketsLoading: false,
-        hasMore: false,
-      });
+      handleStateFromResError();
     }
   }
 
-  const [currPage, setCurrPage] = useState(1);
+  function handleCurrentPage(type = "") {
+    if (type === "prev") {
+      setCurrPage(currPage - 1);
+    }
+    if (type === "next") {
+      setCurrPage(currPage + 1);
+    }
+  }
+
+  function createReqURL(type = "") {
+    return `/api/getTickets?perPg=${TICKETS_PER_PAGE}&link=${type}`;
+  }
+
+  async function getTickets(type = "") {
+    setState({ ...state, ticketsLoading: true });
+    await axios
+      .get(createReqURL(type))
+      .then((response) => {
+        handleStateUpdateFromRes(response.data);
+        handleCurrentPage(type);
+      })
+      .catch((err) => {
+        handleStateFromResError();
+        console.log(err);
+      });
+  }
 
   function handleSelectTicket(tckt) {
     setSingleTicketObj({
@@ -60,32 +88,11 @@ export const Tickets = () => {
     });
   }
 
-  function getReqURL(type = "") {
-    return `/api/getTickets?perPg=${TICKETS_PER_PAGE}&link=${type}`;
-  }
-
-  async function getTickets(type = "") {
-    setState({ ...state, ticketsLoading: true });
-    await axios
-      .get(getReqURL(type))
-      .then((response) => {
-        setStateFromRes(response.data);
-        // console.log(response.data);
-        if (type === "prev") {
-          setCurrPage(currPage - 1);
-        }
-        if (type === "next") {
-          setCurrPage(currPage + 1);
-        }
-      })
-      .catch((err) => console.log(err));
-  }
-
   useEffect(() => {
     if (state.currentPage === 1) {
       getTickets();
     }
-    // console.log("hit");
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -98,6 +105,7 @@ export const Tickets = () => {
       >
         Tickets
       </h1>
+      {/* To view either list of tickets or a single ticket */}
       {!singleTicketObj.singleTicketView ? (
         <div>
           <div
@@ -105,20 +113,13 @@ export const Tickets = () => {
               maxWidth: "600px",
               minHeight: "615px",
               margin: "auto",
-              // border: "1px solid lightblue",
               textAlign: "center",
               padding: "auto",
               display: "flex",
               flexDirection: "column",
-              // justifyContent: "center",
             }}
           >
-            {state.tickets.length !== 0 && state.ticketsLoading === false && (
-              <ListTickets
-                tickets={state.tickets}
-                handleSelectTicket={handleSelectTicket}
-              />
-            )}
+            {/* Loading tickets */}
             {state.ticketsLoading === true && (
               <p
                 style={{
@@ -129,6 +130,29 @@ export const Tickets = () => {
                 Loading tickets...
               </p>
             )}
+            {/* Rendering ticekts */}
+            {state.tickets.length !== 0 &&
+              !state.ticketsLoading &&
+              !state.errorTickets && (
+                <ListTickets
+                  tickets={state.tickets}
+                  handleSelectTicket={handleSelectTicket}
+                />
+              )}
+            {/* No tickets */}
+            {state.tickets.length === 0 &&
+              !state.ticketsLoading &&
+              !state.errorTickets && (
+                <p
+                  style={{
+                    margin: "auto",
+                    color: "#fff",
+                  }}
+                >
+                  No Tickets Found.
+                </p>
+              )}
+            {/* Error fetching tickets */}
             {state.errorTickets === true && state.ticketsLoading === false ? (
               <p
                 style={{
@@ -140,7 +164,7 @@ export const Tickets = () => {
                 <span role="img" aria-label="warning">
                   ⚠️
                 </span>
-                Error getting tickets, please try again or contact help.
+                Error getting tickets, please try again or contact support.
               </p>
             ) : (
               ""
@@ -153,9 +177,7 @@ export const Tickets = () => {
               maxWidth: "600px",
               display: "flex",
               flexDirection: "row",
-              // width: "100%",
               justifyContent: "space-between",
-              // border: "1px solid lightblue",
               height: "fit-content",
             }}
           >
@@ -207,6 +229,7 @@ export const Tickets = () => {
           </div>
         </div>
       ) : (
+        // Single ticket component
         <SingleTicket
           ticket={singleTicketObj.singleTicket}
           closeSingleTicket={handleCloseSingleTicket}

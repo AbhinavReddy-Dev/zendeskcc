@@ -1,23 +1,30 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-export const SingleTicket = ({ ticket, closeSingleTicket }) => {
+
+export const SingleTicket = ({ ticket = {}, closeSingleTicket }) => {
   const [singleTicket, setSingleTicket] = useState({});
   const [loadingTicket, setLoadingTicket] = useState(false);
-  async function getTicketByID(id) {
+  const [errorLoadingTicket, setErrorLoadingTicket] = useState(false);
+  async function getTicketByID(id = null) {
     setLoadingTicket(true);
     await axios
       .get(`/api/getTicketByID?tcktId=${id}`)
       .then((response) => {
         setSingleTicket(response.data.ticket);
 
-        console.log(response.data.ticket);
+        // console.log(response.data.ticket);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setErrorLoadingTicket(true);
+        console.log(err);
+      });
+
     setLoadingTicket(false);
   }
 
   useEffect(() => {
     getTicketByID(ticket.id);
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -27,7 +34,6 @@ export const SingleTicket = ({ ticket, closeSingleTicket }) => {
         minHeight: "615px",
         display: "flex",
         flexDirection: "column",
-
         textAlign: "left",
         borderRadius: "5px",
         margin: "auto",
@@ -38,8 +44,8 @@ export const SingleTicket = ({ ticket, closeSingleTicket }) => {
       <button
         type="button"
         style={{
-          backgroundColor: "#fff",
-          color: "#000",
+          backgroundColor: "#fafefa",
+          color: "#3f3f3f",
           border: "none",
           borderRadius: "15px",
           width: "fit-content",
@@ -49,47 +55,60 @@ export const SingleTicket = ({ ticket, closeSingleTicket }) => {
           margin: "0px",
           padding: "2px 5px",
           cursor: "pointer",
+          fontSize: "16px",
         }}
         onClick={() => closeSingleTicket()}
       >
         X
       </button>
-      {loadingTicket ? (
+      {loadingTicket && !errorLoadingTicket ? (
         <p
           style={{
             margin: "auto",
             color: "#fff",
           }}
         >
-          Loading tickets...
+          Loading ticket...
         </p>
-      ) : (
-        <div
+      ) : !loadingTicket && errorLoadingTicket ? (
+        <p
           style={{
-            padding: "10px 15px",
+            margin: "auto",
+            color: "#fff",
           }}
         >
-          <label htmlFor="ticketID">ID</label>
-          <p name="ticketID" style={{ color: "#fff", width: "20px" }}>
-            {" "}
-            {singleTicket.id}
-          </p>
-          <p style={{ color: "#fff", width: "40px", fontStyle: "oblique" }}>
-            {singleTicket.status}
-          </p>
-          <p style={{ color: "#fff", width: "70%" }}> {singleTicket.subject}</p>
-          <p style={{ color: "#fff", maxWidth: "100%" }}>
-            {singleTicket.description}
-          </p>
-
+          Error Loading ticket, please try again or contact support.
+        </p>
+      ) : (
+        !loadingTicket &&
+        !errorLoadingTicket && (
           <div
             style={{
-              display: "flex",
-              flexDirection: "row",
+              padding: "10px 15px",
             }}
           >
-            {singleTicket.tags
-              ? singleTicket.tags.splice(0, 3).map((tag, i) => (
+            <p name="ticketID" style={{ color: "#fff", width: "20px" }}>
+              {singleTicket.id}
+            </p>
+            <p style={{ color: "#fff", width: "40px", fontStyle: "oblique" }}>
+              {singleTicket.status}
+            </p>
+            <p style={{ color: "#fff", width: "70%" }}>
+              {" "}
+              {singleTicket.subject}
+            </p>
+            <p style={{ color: "#fff", maxWidth: "100%" }}>
+              {singleTicket.description}
+            </p>
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              {singleTicket.tags &&
+                singleTicket.tags.splice(0, 3).map((tag, i) => (
                   <p
                     key={i}
                     style={{
@@ -106,10 +125,18 @@ export const SingleTicket = ({ ticket, closeSingleTicket }) => {
                   >
                     {tag}
                   </p>
-                ))
-              : "No Tags"}
+                ))}
+            </div>
+            <p style={{ color: "#fff", maxWidth: "100%", fontSize: "12px" }}>
+              updated:{" "}
+              {new Date(singleTicket.updated_at).toDateString().slice(3)}
+            </p>
+            <p style={{ color: "#fff", maxWidth: "100%", fontSize: "12px" }}>
+              created:{" "}
+              {new Date(singleTicket.created_at).toDateString().slice(3)}
+            </p>
           </div>
-        </div>
+        )
       )}
     </div>
   );
