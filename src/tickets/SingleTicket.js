@@ -4,18 +4,53 @@ import React, { useEffect, useState } from "react";
 export const SingleTicket = ({ ticket = {}, closeSingleTicket }) => {
   const [singleTicket, setSingleTicket] = useState({});
   const [loadingTicket, setLoadingTicket] = useState(false);
-  const [errorLoadingTicket, setErrorLoadingTicket] = useState(false);
+  const [errorLoadingTicket, setErrorLoadingTicket] = useState({
+    bool: false,
+    message: "",
+  });
+
+  function handleErrorMessage(response) {
+    const helperErrorText = ", please try again or contact support.";
+    if (!response.ok) {
+      switch (response.status) {
+        case 401:
+          return (
+            response.statusText +
+            ": Couldn't authenticate you" +
+            helperErrorText
+          );
+        case 404:
+          return response.statusText + ": Ticket not found" + helperErrorText;
+        case 400:
+          return response.statusText + ": Invalid Ticket Id" + helperErrorText;
+        default:
+          return response.statusText + helperErrorText;
+      }
+    }
+    return "Error: Please try again or contact support.";
+  }
+
   async function getTicketByID(id = null) {
     setLoadingTicket(true);
     await axios
       .get(`/api/getTicketByID?tcktId=${id}`)
       .then((response) => {
-        setSingleTicket(response.data.ticket);
+        if (response.data.status === 200) {
+          setSingleTicket(response.data.data.ticket);
+        } else {
+          setErrorLoadingTicket({
+            bool: true,
+            message: handleErrorMessage(response),
+          });
+        }
 
         // console.log(response.data.ticket);
       })
       .catch((err) => {
-        setErrorLoadingTicket(true);
+        setErrorLoadingTicket({
+          bool: true,
+          message: handleErrorMessage(err.response),
+        });
         console.log(err);
       });
 
@@ -61,7 +96,7 @@ export const SingleTicket = ({ ticket = {}, closeSingleTicket }) => {
       >
         X
       </button>
-      {loadingTicket && !errorLoadingTicket ? (
+      {loadingTicket && !errorLoadingTicket.bool ? (
         <p
           style={{
             margin: "auto",
@@ -70,18 +105,19 @@ export const SingleTicket = ({ ticket = {}, closeSingleTicket }) => {
         >
           Loading ticket...
         </p>
-      ) : !loadingTicket && errorLoadingTicket ? (
+      ) : !loadingTicket && errorLoadingTicket.bool ? (
         <p
           style={{
             margin: "auto",
             color: "#fff",
           }}
         >
-          Error Loading ticket, please try again or contact support.
+          {errorLoadingTicket.message ||
+            "Error Loading ticket, please try again or contact support."}
         </p>
       ) : (
         !loadingTicket &&
-        !errorLoadingTicket && (
+        !errorLoadingTicket.bool && (
           <div
             style={{
               padding: "10px 15px",

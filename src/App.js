@@ -11,7 +11,13 @@ function App() {
         </h3>
       </header>
 
-      <Tickets />
+      <main
+        style={{
+          margin: "1rem auto",
+        }}
+      >
+        <Tickets />
+      </main>
     </div>
   );
 }

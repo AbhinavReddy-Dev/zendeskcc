@@ -6,7 +6,7 @@ import { ListTickets } from "./ListTickets";
 import { SingleTicket } from "./SingleTicket";
 
 export const Tickets = () => {
-  const TICKETS_PER_PAGE = 10;
+  const TICKETS_PER_PAGE = 25;
 
   const [state, setState] = useState({
     tickets: [],
@@ -14,6 +14,7 @@ export const Tickets = () => {
     currentPage: 1,
     ticketsLoading: false,
     errorTickets: false,
+    errorText: "",
   });
 
   const [currPage, setCurrPage] = useState(1);
@@ -23,25 +24,55 @@ export const Tickets = () => {
     singleTicket: {},
   });
 
-  function handleStateFromResError() {
+  function handleErrorMessage(response) {
+    const helperErrorText = ", please try again or contact support.";
+    if (!response.ok) {
+      // console.log(response);
+      switch (response.status) {
+        case 401 || 403:
+          return (
+            response.statusText +
+            ": Couldn't authenticate you" +
+            helperErrorText
+          );
+        case 404:
+          return response.statusText + ": Not found" + helperErrorText;
+        case 429:
+          return (
+            response.statusText +
+            ": Usage limit Exceeded, please contact support."
+          );
+        case 400:
+          return (
+            response.statusText + ": Request not successful" + helperErrorText
+          );
+        default:
+          return response.statusText + helperErrorText;
+      }
+    }
+    return "Error: Please try again or contact support.";
+  }
+
+  function handleStateFromResError(res) {
     setState({
       ...state,
       errorTickets: true,
+      errorText: handleErrorMessage(res),
       ticketsLoading: false,
       hasMore: false,
     });
   }
   function handleStateUpdateFromRes(res) {
-    if (res) {
+    if (res.data.status === 200) {
       setState({
         ...state,
-        tickets: res.tickets,
+        tickets: res.data.data.tickets,
         ticketsLoading: false,
-        hasMore: res.meta ? res.meta.has_more : true,
+        hasMore: res.data.data.meta ? res.data.data.meta.has_more : true,
         errorTickets: false,
       });
     } else {
-      handleStateFromResError();
+      handleStateFromResError(res);
     }
   }
 
@@ -63,12 +94,14 @@ export const Tickets = () => {
     await axios
       .get(createReqURL(type))
       .then((response) => {
-        handleStateUpdateFromRes(response.data);
+        // console.log(response);
+        handleStateUpdateFromRes(response);
         handleCurrentPage(type);
       })
       .catch((err) => {
-        handleStateFromResError();
-        console.log(err);
+        // const errMsg = err.response.data.data.error;
+        handleStateFromResError(err.response);
+        // console.log(err.response.data.data.error);
       });
   }
 
@@ -101,13 +134,14 @@ export const Tickets = () => {
         style={{
           color: "#fff",
           fontWeight: "normal",
+          marginBottom: "2rem",
         }}
       >
         Tickets
       </h1>
       {/* To view either list of tickets or a single ticket */}
       {!singleTicketObj.singleTicketView ? (
-        <div>
+        <>
           <div
             style={{
               maxWidth: "600px",
@@ -164,7 +198,8 @@ export const Tickets = () => {
                 <span role="img" aria-label="warning">
                   ⚠️
                 </span>
-                Error getting tickets, please try again or contact support.
+                {state.errorText ||
+                  "Error getting tickets, please try again or contact support."}
               </p>
             ) : (
               ""
@@ -179,6 +214,7 @@ export const Tickets = () => {
               flexDirection: "row",
               justifyContent: "space-between",
               height: "fit-content",
+              paddingBottom: "5rem",
             }}
           >
             <button
@@ -227,7 +263,7 @@ export const Tickets = () => {
               Next
             </button>
           </div>
-        </div>
+        </>
       ) : (
         // Single ticket component
         <SingleTicket

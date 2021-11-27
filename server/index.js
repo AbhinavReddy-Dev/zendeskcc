@@ -13,8 +13,9 @@ app.get("/api/getTickets", async (req, res) => {
   const reqBody = req.query;
   try {
     res.setHeader("Content-Type", "application/json");
-    const { data } = await getTicketsPerPg(reqBody);
-    res.json(data);
+    const { status, data, statusText, ok } = await getTicketsPerPg(reqBody);
+    res.status(status);
+    res.json({ ok, status, statusText, data });
     return res;
   } catch (err) {
     console.log("Error: ", err);
@@ -25,8 +26,9 @@ app.get("/api/getTicketByID", async (req, res) => {
   const reqBody = req.query;
   try {
     res.setHeader("Content-Type", "application/json");
-    const { data } = await getTicketByID(reqBody);
-    res.json(data);
+    const { data, status, statusText, ok } = await getTicketByID(reqBody);
+    res.status(status);
+    res.json({ ok, status, statusText, data });
     return res;
   } catch (err) {
     console.log("Error: ", err);

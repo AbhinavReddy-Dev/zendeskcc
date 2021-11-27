@@ -2,7 +2,7 @@ const axios = require("axios");
 const { userName, password } = require("../config");
 const { urls } = require("./urls");
 
-const TICKETS_PER_PAGE = 15;
+const TICKETS_PER_PAGE = 25;
 let previousLink = "",
   nextLink = "";
 
@@ -25,15 +25,21 @@ const getTicketsPerPg = async (reqBody, uName = userName, pWord = password) => {
         password: pWord,
       },
     });
-    console.log(ticketsData);
+
     previousLink = ticketsData.data.links.prev;
     nextLink = ticketsData.data.links.next;
-
+    // console.log(ticketsData);
+    ticketsData["ok"] = true;
     return ticketsData;
   } catch (err) {
-    console.log("Error: ", err);
+    // console.log("Error in catch: ", err.response, "error done");
+    return {
+      status: err.response.status,
+      statusText: err.response.statusText,
+      data: err.response.data,
+      ok: false,
+    };
   }
-  return { data: null };
 };
 
 const getTicketByID = async (reqBody, uName = userName, pWord = password) => {
@@ -46,12 +52,19 @@ const getTicketByID = async (reqBody, uName = userName, pWord = password) => {
       },
     });
 
+    ticketData["ok"] = true;
     return ticketData;
   } catch (err) {
-    console.log("Error: ", err);
+    // console.log("Error: ", err);
+    return {
+      status: err.response.status,
+      statusText: err.response.statusText,
+      data: err.response.data,
+      ok: false,
+    };
   }
-  return { data: null };
 };
 
+exports.createTicketsURL = createTicketsURL;
 exports.getTicketByID = getTicketByID;
 exports.getTicketsPerPg = getTicketsPerPg;
