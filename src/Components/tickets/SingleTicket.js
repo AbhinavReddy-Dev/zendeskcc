@@ -30,20 +30,23 @@ export const SingleTicket = ({ ticket = {}, closeSingleTicket }) => {
     return "Error: Please try again or contact support.";
   }
 
+  function handleStateUpdateFromRes(res) {
+    if (res.ok) {
+      setSingleTicket(res.data.ticket);
+    } else {
+      setErrorLoadingTicket({
+        bool: true,
+        message: handleErrorMessage(res),
+      });
+    }
+  }
+
   async function getTicketByID(id = null) {
     setLoadingTicket(true);
     await axios
       .get(`/api/getTicketByID?tcktId=${id}`)
       .then((response) => {
-        if (response.data.status === 200) {
-          setSingleTicket(response.data.data.ticket);
-        } else {
-          setErrorLoadingTicket({
-            bool: true,
-            message: handleErrorMessage(response),
-          });
-        }
-
+        handleStateUpdateFromRes(response.data);
         // console.log(response.data.ticket);
       })
       .catch((err) => {
@@ -51,7 +54,7 @@ export const SingleTicket = ({ ticket = {}, closeSingleTicket }) => {
           bool: true,
           message: handleErrorMessage(err.response),
         });
-        console.log(err);
+        // console.log(err);
       });
 
     setLoadingTicket(false);
@@ -110,8 +113,22 @@ export const SingleTicket = ({ ticket = {}, closeSingleTicket }) => {
           style={{
             margin: "auto",
             color: "#fff",
+            fontStyle: "oblique",
+            display: "flex",
+            flexDirection: "column",
+            textAlign: "center",
           }}
+          data-testid={"ticket-error"}
         >
+          <span
+            role="img"
+            aria-label="warning"
+            style={{
+              marginBottom: "1rem",
+            }}
+          >
+            ⚠️
+          </span>
           {errorLoadingTicket.message ||
             "Error Loading ticket, please try again or contact support."}
         </p>
@@ -129,8 +146,10 @@ export const SingleTicket = ({ ticket = {}, closeSingleTicket }) => {
             <p style={{ color: "#fff", width: "40px", fontStyle: "oblique" }}>
               {singleTicket.status}
             </p>
-            <p style={{ color: "#fff", width: "70%" }}>
-              {" "}
+            <p
+              style={{ color: "#fff", width: "70%" }}
+              data-testid={"ticket-subject"}
+            >
               {singleTicket.subject}
             </p>
             <p style={{ color: "#fff", maxWidth: "100%" }}>

@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { Tickets } from "./tickets/Tickets";
+import { Tickets } from "./Components/tickets/Tickets";
 
 function App() {
   return (

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1638099465300" clover="3.2.0">
+  <project timestamp="1638099465300" name="All files">
+    <metrics statements="87" coveredstatements="41" conditionals="70" coveredconditionals="27" methods="36" coveredmethods="16" elements="193" coveredelements="84" complexity="0" loc="87" ncloc="87" packages="2" files="9" classes="9"/>
+    <package name="src">
+      <metrics statements="14" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="4"/>
+      <file name="App.js" path="/Users/abhinavreddy/Desktop/projects/zendeskcc/src/App.js">
+        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="6" count="0" type="stmt"/>
+      </file>
+      <file name="jest.config.js" path="/Users/abhinavreddy/Desktop/projects/zendeskcc/src/jest.config.js">
+        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="0" type="stmt"/>
+      </file>
+      <file name="setupTests.js" path="/Users/abhinavreddy/Desktop/projects/zendeskcc/src/setupTests.js">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      </file>
+      <file name="testData.js" path="/Users/abhinavreddy/Desktop/projects/zendeskcc/src/testData.js">
+        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="427" count="2" type="stmt"/>
+        <line num="434" count="2" type="stmt"/>
+        <line num="487" count="2" type="stmt"/>
+      </file>
+      <file name="testServer.js" path="/Users/abhinavreddy/Desktop/projects/zendeskcc/src/testServer.js">
+        <metrics statements="8" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="4"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="10" count="2" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="21" count="2" type="stmt"/>
+        <line num="22" count="2" type="stmt"/>
+        <line num="23" count="4" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.Components.tickets">
+      <metrics statements="73" coveredstatements="32" conditionals="70" coveredconditionals="27" methods="29" coveredmethods="12"/>
+      <file name="ListTickets.js" path="/Users/abhinavreddy/Desktop/projects/zendeskcc/src/Components/tickets/ListTickets.js">
+        <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="7" count="2" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="12" count="2" type="stmt"/>
+        <line num="15" count="9" type="stmt"/>
+      </file>
+      <file name="SingleTicket.js" path="/Users/abhinavreddy/Desktop/projects/zendeskcc/src/Components/tickets/SingleTicket.js">
+        <metrics statements="25" coveredstatements="9" conditionals="25" coveredconditionals="13" methods="9" coveredmethods="3"/>
+        <line num="4" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="5" count="3" type="stmt"/>
+        <line num="6" count="3" type="stmt"/>
+        <line num="7" count="3" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="14" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="15" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="34" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="45" count="2" type="stmt"/>
+        <line num="46" count="2" type="stmt"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="53" count="0" type="stmt"/>
+        <line num="60" count="0" type="stmt"/>
+        <line num="63" count="3" type="stmt"/>
+        <line num="64" count="2" type="stmt"/>
+        <line num="68" count="3" type="stmt"/>
+        <line num="98" count="0" type="stmt"/>
+        <line num="167" count="0" type="stmt"/>
+      </file>
+      <file name="TicketCard.js" path="/Users/abhinavreddy/Desktop/projects/zendeskcc/src/Components/tickets/TicketCard.js">
+        <metrics statements="6" coveredstatements="5" conditionals="1" coveredconditionals="0" methods="3" coveredmethods="2"/>
+        <line num="3" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="4" count="18" type="stmt"/>
+        <line num="6" count="18" type="stmt"/>
+        <line num="7" count="9" type="stmt"/>
+        <line num="11" count="18" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+      </file>
+      <file name="Tickets.js" path="/Users/abhinavreddy/Desktop/projects/zendeskcc/src/Components/tickets/Tickets.js">
+        <metrics statements="36" coveredstatements="12" conditionals="44" coveredconditionals="14" methods="14" coveredmethods="4"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="9" count="2" type="stmt"/>
+        <line num="11" count="2" type="stmt"/>
+        <line num="20" count="2" type="stmt"/>
+        <line num="22" count="2" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="31" count="0" type="cond" truecount="0" falsecount="5"/>
+        <line num="33" count="0" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="53" count="0" type="stmt"/>
+        <line num="57" count="0" type="stmt"/>
+        <line num="66" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="67" count="0" type="stmt"/>
+        <line num="75" count="0" type="stmt"/>
+        <line num="80" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="81" count="0" type="stmt"/>
+        <line num="83" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="84" count="0" type="stmt"/>
+        <line num="89" count="1" type="stmt"/>
+        <line num="93" count="1" type="stmt"/>
+        <line num="94" count="1" type="stmt"/>
+        <line num="98" count="0" type="stmt"/>
+        <line num="99" count="0" type="stmt"/>
+        <line num="103" count="0" type="stmt"/>
+        <line num="109" count="0" type="stmt"/>
+        <line num="117" count="0" type="stmt"/>
+        <line num="124" count="2" type="stmt"/>
+        <line num="125" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="126" count="1" type="stmt"/>
+        <line num="131" count="2" type="stmt"/>
+        <line num="234" count="0" type="stmt"/>
+        <line num="260" count="0" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>

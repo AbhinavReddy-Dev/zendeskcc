@@ -23,6 +23,7 @@ export const TicketCard = ({ ticket = {}, selectTicket }) => {
         cursor: "pointer",
       }}
       onClick={() => selectTicket(ticketState)}
+      data-testid={`ticket-${ticketState.id}`}
     >
       <p style={{ color: "#fff", width: "25px" }}> {ticketState.id}</p>
       <p

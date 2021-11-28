@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import "../App.css";
+import "../../App.css";
 import { ListTickets } from "./ListTickets";
 import { SingleTicket } from "./SingleTicket";
 
@@ -63,12 +63,12 @@ export const Tickets = () => {
     });
   }
   function handleStateUpdateFromRes(res) {
-    if (res.data.status === 200) {
+    if (res.ok) {
       setState({
         ...state,
-        tickets: res.data.data.tickets,
+        tickets: res.data.tickets,
         ticketsLoading: false,
-        hasMore: res.data.data.meta ? res.data.data.meta.has_more : true,
+        hasMore: res.data.meta ? res.data.meta.has_more : true,
         errorTickets: false,
       });
     } else {
@@ -94,8 +94,8 @@ export const Tickets = () => {
     await axios
       .get(createReqURL(type))
       .then((response) => {
-        // console.log(response);
-        handleStateUpdateFromRes(response);
+        // console.log(response.data);
+        handleStateUpdateFromRes(response.data);
         handleCurrentPage(type);
       })
       .catch((err) => {
@@ -193,9 +193,19 @@ export const Tickets = () => {
                   margin: "auto",
                   color: "#fff",
                   fontStyle: "oblique",
+                  display: "flex",
+                  flexDirection: "column",
+                  textAlign: "center",
                 }}
+                data-testid={"tickets-error"}
               >
-                <span role="img" aria-label="warning">
+                <span
+                  role="img"
+                  aria-label="warning"
+                  style={{
+                    marginBottom: "1rem",
+                  }}
+                >
                   ⚠️
                 </span>
                 {state.errorText ||

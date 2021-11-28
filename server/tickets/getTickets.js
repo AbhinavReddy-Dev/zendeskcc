@@ -28,7 +28,7 @@ const getTicketsPerPg = async (reqBody, uName = userName, pWord = password) => {
 
     previousLink = ticketsData.data.links.prev;
     nextLink = ticketsData.data.links.next;
-    // console.log(ticketsData);
+
     ticketsData["ok"] = true;
     return ticketsData;
   } catch (err) {
@@ -36,7 +36,7 @@ const getTicketsPerPg = async (reqBody, uName = userName, pWord = password) => {
     return {
       status: err.response.status,
       statusText: err.response.statusText,
-      data: err.response.data,
+      data: null,
       ok: false,
     };
   }
@@ -59,7 +59,7 @@ const getTicketByID = async (reqBody, uName = userName, pWord = password) => {
     return {
       status: err.response.status,
       statusText: err.response.statusText,
-      data: err.response.data,
+      data: null,
       ok: false,
     };
   }

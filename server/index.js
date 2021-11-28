@@ -19,6 +19,13 @@ app.get("/api/getTickets", async (req, res) => {
     return res;
   } catch (err) {
     console.log("Error: ", err);
+    res.status(418);
+    res.json({
+      ok: false,
+      status: 418,
+      statusText: "I'm a teapot",
+      data: null,
+    });
   }
 });
 
@@ -32,6 +39,13 @@ app.get("/api/getTicketByID", async (req, res) => {
     return res;
   } catch (err) {
     console.log("Error: ", err);
+    res.status(418);
+    res.json({
+      ok: false,
+      status: 418,
+      statusText: "I'm a teapot",
+      data: null,
+    });
   }
 });
 
