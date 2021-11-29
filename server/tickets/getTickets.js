@@ -32,7 +32,6 @@ const getTicketsPerPg = async (reqBody, uName = userName, pWord = password) => {
     ticketsData["ok"] = true;
     return ticketsData;
   } catch (err) {
-    // console.log("Error in catch: ", err.response, "error done");
     return {
       status: err.response.status,
       statusText: err.response.statusText,
@@ -55,7 +54,6 @@ const getTicketByID = async (reqBody, uName = userName, pWord = password) => {
     ticketData["ok"] = true;
     return ticketData;
   } catch (err) {
-    // console.log("Error: ", err);
     return {
       status: err.response.status,
       statusText: err.response.statusText,

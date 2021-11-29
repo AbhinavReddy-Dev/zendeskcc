@@ -2,7 +2,10 @@ module.exports = {
   setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"], // this is the KEY
   // note it should be in the top level of the exported object.
   collectCoverage: true,
-  coverageReporters: ["json", "html"],
+  collectCoverageFrom: ["src/Components/**/*.js", "!**/node_modules/**"],
+  coveragePathIgnorePatterns: ["src/jest.config.js", "src/serviceWorker.js"],
+  coverageReporters: ["html", "text", "text-summary", "cobertura"],
+  testMatch: ["**/*.test.js"],
 
   projects: [
     {
@@ -13,7 +16,7 @@ module.exports = {
     {
       displayName: "frontend",
       testEnvironment: "jsdom",
-      testMatch: ["<rootDir>/src/**/*.test.js"],
+      testMatch: ["<rootDir>/src/components/**/*.test.js"],
     },
   ],
 };

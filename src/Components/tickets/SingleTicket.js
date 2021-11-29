@@ -11,34 +11,23 @@ export const SingleTicket = ({ ticket = {}, closeSingleTicket }) => {
 
   function handleErrorMessage(response) {
     const helperErrorText = ", please try again or contact support.";
-    if (!response.ok) {
-      switch (response.status) {
-        case 401:
-          return (
-            response.statusText +
-            ": Couldn't authenticate you" +
-            helperErrorText
-          );
-        case 404:
-          return response.statusText + ": Ticket not found" + helperErrorText;
-        case 400:
-          return response.statusText + ": Invalid Ticket Id" + helperErrorText;
-        default:
-          return response.statusText + helperErrorText;
-      }
+
+    switch (response.status) {
+      case 401:
+        return (
+          response.statusText + ": Couldn't authenticate you" + helperErrorText
+        );
+      case 404:
+        return response.statusText + ": Ticket not found" + helperErrorText;
+      case 400:
+        return response.statusText + ": Invalid Ticket Id" + helperErrorText;
+      default:
+        return response.statusText + helperErrorText;
     }
-    return "Error: Please try again or contact support.";
   }
 
   function handleStateUpdateFromRes(res) {
-    if (res.ok) {
-      setSingleTicket(res.data.ticket);
-    } else {
-      setErrorLoadingTicket({
-        bool: true,
-        message: handleErrorMessage(res),
-      });
-    }
+    setSingleTicket(res.data.ticket);
   }
 
   async function getTicketByID(id = null) {
@@ -47,14 +36,12 @@ export const SingleTicket = ({ ticket = {}, closeSingleTicket }) => {
       .get(`/api/getTicketByID?tcktId=${id}`)
       .then((response) => {
         handleStateUpdateFromRes(response.data);
-        // console.log(response.data.ticket);
       })
       .catch((err) => {
         setErrorLoadingTicket({
           bool: true,
           message: handleErrorMessage(err.response),
         });
-        // console.log(err);
       });
 
     setLoadingTicket(false);
@@ -95,7 +82,7 @@ export const SingleTicket = ({ ticket = {}, closeSingleTicket }) => {
           cursor: "pointer",
           fontSize: "16px",
         }}
-        onClick={() => closeSingleTicket()}
+        onClick={closeSingleTicket}
       >
         X
       </button>
@@ -129,8 +116,7 @@ export const SingleTicket = ({ ticket = {}, closeSingleTicket }) => {
           >
             ⚠️
           </span>
-          {errorLoadingTicket.message ||
-            "Error Loading ticket, please try again or contact support."}
+          {errorLoadingTicket.message}
         </p>
       ) : (
         !loadingTicket &&

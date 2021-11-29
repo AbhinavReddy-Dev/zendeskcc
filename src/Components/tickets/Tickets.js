@@ -19,6 +19,10 @@ export const Tickets = () => {
 
   const [currPage, setCurrPage] = useState(1);
 
+  const prev = () => getTickets("prev");
+
+  const next = () => getTickets("next");
+
   const [singleTicketObj, setSingleTicketObj] = useState({
     singleTicketView: false,
     singleTicket: {},
@@ -26,31 +30,25 @@ export const Tickets = () => {
 
   function handleErrorMessage(response) {
     const helperErrorText = ", please try again or contact support.";
-    if (!response.ok) {
-      // console.log(response);
-      switch (response.status) {
-        case 401 || 403:
-          return (
-            response.statusText +
-            ": Couldn't authenticate you" +
-            helperErrorText
-          );
-        case 404:
-          return response.statusText + ": Not found" + helperErrorText;
-        case 429:
-          return (
-            response.statusText +
-            ": Usage limit Exceeded, please contact support."
-          );
-        case 400:
-          return (
-            response.statusText + ": Request not successful" + helperErrorText
-          );
-        default:
-          return response.statusText + helperErrorText;
-      }
+    switch (response.status) {
+      case 401 || 403:
+        return (
+          response.statusText + ": Couldn't authenticate you" + helperErrorText
+        );
+      case 404:
+        return response.statusText + ": Not found" + helperErrorText;
+      case 429:
+        return (
+          response.statusText +
+          ": Usage limit Exceeded, please contact support."
+        );
+      case 400:
+        return (
+          response.statusText + ": Request not successful" + helperErrorText
+        );
+      default:
+        return response.statusText + helperErrorText;
     }
-    return "Error: Please try again or contact support.";
   }
 
   function handleStateFromResError(res) {
@@ -63,20 +61,16 @@ export const Tickets = () => {
     });
   }
   function handleStateUpdateFromRes(res) {
-    if (res.ok) {
-      setState({
-        ...state,
-        tickets: res.data.tickets,
-        ticketsLoading: false,
-        hasMore: res.data.meta ? res.data.meta.has_more : true,
-        errorTickets: false,
-      });
-    } else {
-      handleStateFromResError(res);
-    }
+    setState({
+      ...state,
+      tickets: res.data.tickets,
+      ticketsLoading: false,
+      hasMore: res.data.meta ? res.data.meta.has_more : true,
+      errorTickets: false,
+    });
   }
 
-  function handleCurrentPage(type = "") {
+  function handleCurrentPage(type) {
     if (type === "prev") {
       setCurrPage(currPage - 1);
     }
@@ -94,32 +88,28 @@ export const Tickets = () => {
     await axios
       .get(createReqURL(type))
       .then((response) => {
-        // console.log(response.data);
         handleStateUpdateFromRes(response.data);
         handleCurrentPage(type);
       })
       .catch((err) => {
-        // const errMsg = err.response.data.data.error;
         handleStateFromResError(err.response);
-        // console.log(err.response.data.data.error);
       });
   }
 
-  function handleSelectTicket(tckt) {
+  const handleSelectTicket = (tckt) => {
     setSingleTicketObj({
       ...singleTicketObj,
       singleTicket: tckt,
       singleTicketView: true,
     });
-  }
+  };
 
-  function handleCloseSingleTicket() {
+  const handleCloseSingleTicket = () =>
     setSingleTicketObj({
       ...singleTicketObj,
       singleTicket: {},
       singleTicketView: false,
     });
-  }
 
   useEffect(() => {
     if (state.currentPage === 1) {
@@ -231,9 +221,7 @@ export const Tickets = () => {
             <button
               type="button"
               disabled={currPage === 1}
-              onClick={() => {
-                getTickets("prev");
-              }}
+              onClick={prev}
               style={{
                 border: "none",
                 padding: "5px 7px",
@@ -257,9 +245,7 @@ export const Tickets = () => {
             </p>
             <button
               type="buton"
-              onClick={() => {
-                getTickets("next");
-              }}
+              onClick={next}
               disabled={!state.hasMore}
               style={{
                 border: "none",

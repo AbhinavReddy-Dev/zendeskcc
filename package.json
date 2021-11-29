@@ -16,7 +16,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test-react": "react-scripts test  --env=jest-environment-jsdom-sixteen",
+    "test-react": "react-scripts test --env=jest-environment-jsdom-sixteen  --collectCoverageFrom=src/Components/**/*.js --collectCoverageFrom=['!src/serviceWorker.js' ,'!src/App.js'--collectCoverageFrom='!src/index.js','!src/jest.config.js' ,'!src/App.css','!src/testServer.js', '!src/testData.js']",
     "test-node": "jest --env=node server",
     "eject": "react-scripts eject",
     "server": "nodemon cd server && -r dotenv/config index.js",
@@ -33,10 +33,11 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  
   "devDependencies": {
+    "@testing-library/dom": "^8.11.1",
     "@testing-library/jest-dom": "^5.15.1",
     "@testing-library/react": "^12.1.2",
+    "@testing-library/user-event": "^13.5.0",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "express-pino-logger": "^4.0.0",
@@ -48,5 +49,4 @@
     "npm-run-all": "^4.1.5",
     "pino-colada": "^1.5.1"
   }
-
 }

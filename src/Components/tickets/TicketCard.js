@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 export const TicketCard = ({ ticket = {}, selectTicket }) => {
   const [ticketState, setTicketState] = useState({});
 
+  const selcTicket = () => selectTicket(ticketState);
+
   useEffect(() => {
     setTicketState(ticket);
     // eslint-disable-next-line
@@ -22,7 +24,7 @@ export const TicketCard = ({ ticket = {}, selectTicket }) => {
         backgroundColor: "#3D2C8D",
         cursor: "pointer",
       }}
-      onClick={() => selectTicket(ticketState)}
+      onClick={selcTicket}
       data-testid={`ticket-${ticketState.id}`}
     >
       <p style={{ color: "#fff", width: "25px" }}> {ticketState.id}</p>

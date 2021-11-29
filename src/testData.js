@@ -430,6 +430,33 @@ export const getTicketsUnSuccessfulRes = {
   data: null,
   ok: false,
 };
+export const getTicketsUnSuccessfulRes2 = {
+  status: 404,
+  statusText: "Not found: ",
+  data: null,
+  ok: false,
+};
+
+export const getTicketsUnSuccessfulRes3 = {
+  status: 429,
+  statusText: "Usage limit Exceeded, please contact support.",
+  data: null,
+  ok: false,
+};
+
+export const getTicketsUnSuccessfulRes4 = {
+  status: 400,
+  statusText: "Request not successful",
+  data: null,
+  ok: false,
+};
+
+export const getTicketsUnSuccessfulRes5 = {
+  status: 500,
+  statusText: "Server error",
+  data: null,
+  ok: false,
+};
 
 export const getTicketSuccessfulRes = {
   ok: true,
@@ -487,6 +514,27 @@ export const getTicketSuccessfulRes = {
 export const getTicketUnSuccessfulRes = {
   status: 404,
   statusText: "Ticket not found: ",
+  data: null,
+  ok: false,
+};
+
+export const getTicketUnSuccessfulRes2 = {
+  status: 401,
+  statusText: "Couldn't authenticate you: ",
+  data: null,
+  ok: false,
+};
+
+export const getTicketUnSuccessfulRes3 = {
+  status: 400,
+  statusText: "Invalid Ticket Id: ",
+  data: null,
+  ok: false,
+};
+
+export const getTicketUnSuccessfulRes4 = {
+  status: 500,
+  statusText: "Server error",
   data: null,
   ok: false,
 };

@@ -54,11 +54,13 @@ This project uses React and ExpressJs to display zendesk tickets.
 - Run react unit tests
 
 ```bash
-npm run test-react a
+npm run test-react a // For test
+npm run test-react a -- --coverage --no-cache // For test coverage
 ```
 
 - Run server unit tests
 
 ```bash
-npm run test-node
+npm run test-node  // For test
+npm run test-node -- --coverage --no-cache // For test coverage
 ```
