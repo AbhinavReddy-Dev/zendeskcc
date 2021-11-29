@@ -2,6 +2,7 @@ import { rest } from "msw";
 import { setupServer } from "msw/node";
 import { getTicketsSuccessfulRes, getTicketSuccessfulRes } from "./testData";
 
+// Test Server
 const server = setupServer(
   rest.get("http://localhost/api/getTickets", (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json(getTicketsSuccessfulRes));
