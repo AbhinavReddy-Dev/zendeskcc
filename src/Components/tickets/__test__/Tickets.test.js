@@ -15,6 +15,18 @@ describe("Tickets view rendering tests: ", () => {
     expect(screen.getByTestId("ticket-1")).toBeInTheDocument();
   });
 
+  it("Successfully renders a message for no tickets when there are no tickets or ticekts is an empty array", async () => {
+    server.use(
+      rest.get("http://localhost/api/getTickets", (_req, res, ctx) => {
+        getTicketsSuccessfulRes["data"].tickets = [];
+        return res(ctx.status(200), ctx.json(getTicketsSuccessfulRes));
+      })
+    );
+    render(<Tickets />);
+
+    expect(await screen.findByTestId("tickets-empty")).toBeInTheDocument();
+  });
+
   it("Handles errors and displays error message when error in fetching tickets", async () => {
     server.use(
       rest.get("http://localhost/api/getTickets", (_req, res, ctx) => {

@@ -182,6 +182,7 @@ export const Tickets = () => {
                     margin: "auto",
                     color: "#fff",
                   }}
+                  data-testid="tickets-empty"
                 >
                   No Tickets Found.
                 </p>

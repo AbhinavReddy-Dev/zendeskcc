@@ -1,14 +1,22 @@
-# zendeskcc
+# 2022 Zendesk Coding Challenge
 
-This project uses react on the frontend and expressjs on the backend to display zendesk tickets.
+This project uses React and ExpressJs to display zendesk tickets.
 
-### Using this project
+- Uses components structure for displaying tickets using React.
+- Displays 25 tickets on each page, pagination is used to navigate to more tickets.
+- Each ticket data is displayed.
+- Uses .env file to store sensitive information like, username and password to access zendesk domain.
+- Runs the server concurrently to serve the endpoints to fetch tickets and ticket by ID information.
+- Handles errors and displays actual status text with additional text to make it soft for the end-user.
+- Tests are implemented for both React and ExpressJs using JEST.
+
+### Running this project locally
 
 1. Clone the project, change into the directory and install the dependencies.
 
    ```bash
    git clone https://github.com/AbhinavReddy-Dev/zendeskcc.git
-   cd zendeskcc // or the name of the directory you name while cloning
+   cd zendeskcc
    npm install
    ```
 
@@ -23,19 +31,19 @@ This project uses react on the frontend and expressjs on the backend to display 
 
 3. Start the server and react app
 
-   You can start the server on its own with the command:
+   - You can start the server on its own with the command:
 
    ```bash
    npm run server
    ```
 
-   Run the React application on its own with the command:
+   - Run the React application on its own with the command:
 
    ```bash
    npm start
    ```
 
-   Run both applications together with the command:
+   - Run both applications concurrently with the command:
 
    ```bash
    npm run dev
@@ -43,14 +51,14 @@ This project uses react on the frontend and expressjs on the backend to display 
 
 4. Start tests
 
-   Run react unit tests
+- Run react unit tests
 
-   ```bash
-   npm run test-react
-   ```
+```bash
+npm run test-react a
+```
 
-   Run server unit tests
+- Run server unit tests
 
-   ```bash
-   npm run test-node
-   ```
+```bash
+npm run test-node
+```

@@ -7,7 +7,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h3 style={{ fontWeight: "lighter" }}>
-          Zendesk Coding Challenge - Tickets Viewer
+          2022 Zendesk Coding Challenge - Tickets Viewer
         </h3>
       </header>
 
