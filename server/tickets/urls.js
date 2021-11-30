@@ -1,10 +1,12 @@
-const subDomain = "zcczendeskcc";
+// const subDomain = "zcczendeskcc";
+
+const { domain } = require("../config");
 
 const urls = {
-  getTickets: `https://${subDomain}.zendesk.com/api/v2/tickets.json`,
+  getTickets: `https://${domain}.zendesk.com/api/v2/tickets.json`,
   getTicketByID: (id) => {
     // console.log(`https://${subDomain}.zendesk.com/api/v2/ticket/${id}.json`);
-    return `https://${subDomain}.zendesk.com/api/v2/tickets/${id}.json`;
+    return `https://${domain}.zendesk.com/api/v2/tickets/${id}.json`;
   },
 };
 

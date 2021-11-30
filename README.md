@@ -27,6 +27,7 @@ This project uses React and ExpressJs to display zendesk tickets.
    // EXPRESS_PORT
    // USER_NAME
    // PASSWORD
+   // DOMAIN_NAME
    ```
 
 3. Start the server and react app
