@@ -22,7 +22,6 @@ describe("Tickets view rendering tests: ", () => {
   });
 
   it("Successfully simulates a click on next", async () => {
-    // render(<Tickets />);
     const mockOnClick = jest.fn();
     const { findByTestId } = render(
       <Button
@@ -38,17 +37,16 @@ describe("Tickets view rendering tests: ", () => {
     expect(await screen.findByTestId("ticket-26")).toBeInTheDocument();
   });
   it("Successfully simulates a click on a ticket card", async () => {
-    // render(<Tickets />);
-    // const mockOnClick = jest.fn();
     render(<Tickets />);
+
     fireEvent.click(await screen.findByTestId("ticket-1"));
-    // expect(mockOnClick).toHaveBeenCalledTimes(1);
-    expect(await screen.findByTestId("close-button")).toBeInTheDocument();
-    fireEvent.click(await screen.findByTestId("close-button"));
+    const closeButton = await screen.findByTestId("close-button");
+    expect(closeButton).toBeInTheDocument();
+    fireEvent.click(closeButton);
+    expect(closeButton).not.toBeInTheDocument();
   });
 
   it("Successfully simulates a click on prev", async () => {
-    // render(<Tickets />);
     const mockOnClick = jest.fn();
     const { findByTestId } = render(
       <Button

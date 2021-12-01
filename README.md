@@ -9,6 +9,7 @@ This project uses React and ExpressJs to display zendesk tickets.
 - Runs the server concurrently to serve the endpoints to fetch tickets and ticket by ID information.
 - Handles errors and displays actual status text with additional text to make it soft for the end-user.
 - Tests are implemented for both React and ExpressJs using JEST.
+- After understand how the unit test works with React-Testing-Library, total coverage of the branches or lines is not always possible as the main purpose of RTL is to test in the way that user interacts but now the internal components' state changes. PS: updated after deadline.
 
 ### Running this project locally
 
