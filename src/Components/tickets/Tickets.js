@@ -135,7 +135,8 @@ export const Tickets = () => {
         Tickets
       </h1>
       {/* To view either list of tickets or a single ticket */}
-      {!singleTicketObj.singleTicketView ? (
+      {/* {!singleTicketObj.singleTicketView ? ( */}
+      {!singleTicketObj.singleTicketView && (
         <>
           <div
             style={{
@@ -234,6 +235,7 @@ export const Tickets = () => {
                 margin: "5px 10px",
                 textAlign: "center",
               }}
+              data-testid="page-no"
             >
               {currPage}
             </p>
@@ -246,14 +248,17 @@ export const Tickets = () => {
             />
           </div>
         </>
-      ) : (
-        // Single ticket component
+      )}
+      {/* // ) : ( */}
+      {/* // Single ticket component */}
+      {singleTicketObj.singleTicketView && (
         <SingleTicket
           data-testid="single-ticket-comp"
           ticket={singleTicketObj.singleTicket}
           closeSingleTicket={handleCloseSingleTicket}
         />
       )}
+      {/* // )} */}
     </>
   );
 };

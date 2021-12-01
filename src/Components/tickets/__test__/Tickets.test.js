@@ -1,5 +1,6 @@
 import React from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { server, rest } from "../../../testServer";
 import { Tickets } from "../Tickets";
 import { ListTickets } from "../ListTickets";
@@ -23,7 +24,8 @@ describe("Tickets view rendering tests: ", () => {
 
   it("Successfully simulates a click on next", async () => {
     const mockOnClick = jest.fn();
-    const { findByTestId } = render(
+
+    render(
       <Button
         onclick={mockOnClick}
         testId={"next-button"}
@@ -31,24 +33,12 @@ describe("Tickets view rendering tests: ", () => {
         disabledBool={false}
       />
     );
-    fireEvent.click(await findByTestId("next-button"));
+    userEvent.click(await screen.findByTestId("next-button"));
     expect(mockOnClick).toHaveBeenCalledTimes(1);
-    render(<Tickets />);
-    expect(await screen.findByTestId("ticket-26")).toBeInTheDocument();
   });
-  it("Successfully simulates a click on a ticket card", async () => {
-    render(<Tickets />);
-
-    fireEvent.click(await screen.findByTestId("ticket-1"));
-    const closeButton = await screen.findByTestId("close-button");
-    expect(closeButton).toBeInTheDocument();
-    fireEvent.click(closeButton);
-    expect(closeButton).not.toBeInTheDocument();
-  });
-
   it("Successfully simulates a click on prev", async () => {
     const mockOnClick = jest.fn();
-    const { findByTestId } = render(
+    render(
       <Button
         onclick={mockOnClick}
         testId={"prev-button"}
@@ -56,8 +46,38 @@ describe("Tickets view rendering tests: ", () => {
         disabledBool={false}
       />
     );
-    fireEvent.click(await findByTestId("prev-button"));
+    userEvent.click(await screen.findByTestId("prev-button"));
     expect(mockOnClick).toHaveBeenCalledTimes(1);
+  });
+
+  it("Successfully simulates a click on next or prev and changes page no", async () => {
+    const { rerender } = render(<Tickets />);
+
+    userEvent.click(await screen.findByTestId("next-button"));
+    rerender(<Tickets />);
+
+    expect(await screen.findByTestId("ticket-27")).toBeInTheDocument();
+    expect((await screen.findByTestId("page-no")).innerHTML).toEqual("2");
+
+    userEvent.click(await screen.findByTestId("prev-button"));
+    rerender(<Tickets />);
+
+    expect(await screen.findByTestId("ticket-2")).toBeInTheDocument();
+    expect((await screen.findByTestId("page-no")).innerHTML).toEqual("1");
+  });
+
+  it("Successfully simulates a click on a ticket card", async () => {
+    const { rerender } = render(<Tickets />);
+
+    userEvent.click(await screen.findByTestId("ticket-1"));
+
+    rerender(<Tickets />);
+    const closeButton = await screen.findByTestId("close-button");
+    expect(closeButton).toBeInTheDocument();
+
+    rerender(<Tickets />);
+    userEvent.click(closeButton);
+    expect(closeButton).not.toBeInTheDocument();
   });
 
   it("Successfully renders a message for no tickets when there are no tickets or ticekts is an empty array", async () => {
