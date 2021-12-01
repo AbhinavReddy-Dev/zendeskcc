@@ -2,6 +2,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import "../../App.css";
+import { Button } from "./Button";
 import { ListTickets } from "./ListTickets";
 import { SingleTicket } from "./SingleTicket";
 
@@ -31,10 +32,12 @@ export const Tickets = () => {
   function handleErrorMessage(response) {
     const helperErrorText = ", please try again or contact support.";
     switch (response.status) {
-      case 401 || 403:
+      case 401:
         return (
           response.statusText + ": Couldn't authenticate you" + helperErrorText
         );
+      case 403:
+        return response.statusText + helperErrorText;
       case 404:
         return response.statusText + ": Not found" + helperErrorText;
       case 429:
@@ -65,31 +68,20 @@ export const Tickets = () => {
       ...state,
       tickets: res.data.tickets,
       ticketsLoading: false,
-      hasMore: res.data.meta ? res.data.meta.has_more : true,
+      hasMore: res.data.meta && res.data.meta.has_more,
       errorTickets: false,
     });
-  }
-
-  function handleCurrentPage(type) {
-    if (type === "prev") {
-      setCurrPage(currPage - 1);
-    }
-    if (type === "next") {
-      setCurrPage(currPage + 1);
-    }
-  }
-
-  function createReqURL(type = "") {
-    return `/api/getTickets?perPg=${TICKETS_PER_PAGE}&link=${type}`;
   }
 
   async function getTickets(type = "") {
     setState({ ...state, ticketsLoading: true });
     await axios
-      .get(createReqURL(type))
+      .get(`/api/getTickets?perPg=${TICKETS_PER_PAGE}&link=${type}`)
       .then((response) => {
         handleStateUpdateFromRes(response.data);
-        handleCurrentPage(type);
+        setCurrPage(
+          currPage + (type === "prev" ? -1 : type === "next" ? +1 : +0)
+        );
       })
       .catch((err) => {
         handleStateFromResError(err.response);
@@ -112,9 +104,22 @@ export const Tickets = () => {
     });
 
   useEffect(() => {
-    if (state.currentPage === 1) {
-      getTickets();
-    }
+    getTickets();
+    return () => {
+      setState({
+        tickets: [],
+        hasMore: true,
+        currentPage: 1,
+        ticketsLoading: false,
+        errorTickets: false,
+        errorText: "",
+      });
+      setCurrPage(1);
+      setSingleTicketObj({
+        singleTicketView: false,
+        singleTicket: {},
+      });
+    };
     // eslint-disable-next-line
   }, []);
 
@@ -199,8 +204,7 @@ export const Tickets = () => {
                 >
                   ⚠️
                 </span>
-                {state.errorText ||
-                  "Error getting tickets, please try again or contact support."}
+                {state.errorText}
               </p>
             ) : (
               ""
@@ -218,22 +222,12 @@ export const Tickets = () => {
               paddingBottom: "5rem",
             }}
           >
-            <button
-              type="button"
-              disabled={currPage === 1}
-              onClick={prev}
-              style={{
-                border: "none",
-                padding: "5px 7px",
-                borderRadius: "5px",
-                backgroundColor: "#C996CC",
-                color: "#1C0C5B",
-                fontSize: "14px",
-                cursor: currPage === 1 ? "not-allowed" : "pointer",
-              }}
-            >
-              Previous
-            </button>
+            <Button
+              onclick={prev}
+              disabledBool={currPage === 1}
+              testId={"prev-button"}
+              text={"Previous"}
+            />
             <p
               style={{
                 color: "#fff",
@@ -243,27 +237,19 @@ export const Tickets = () => {
             >
               {currPage}
             </p>
-            <button
-              type="buton"
-              onClick={next}
-              disabled={!state.hasMore}
-              style={{
-                border: "none",
-                padding: "5px 10px",
-                borderRadius: "5px",
-                backgroundColor: "#C996CC",
-                color: "#1C0C5B",
-                fontSize: "14px",
-                cursor: !state.hasMore ? "not-allowed" : "pointer",
-              }}
-            >
-              Next
-            </button>
+
+            <Button
+              onclick={next}
+              disabledBool={!state.hasMore}
+              testId={"next-button"}
+              text={"Next"}
+            />
           </div>
         </>
       ) : (
         // Single ticket component
         <SingleTicket
+          data-testid="single-ticket-comp"
           ticket={singleTicketObj.singleTicket}
           closeSingleTicket={handleCloseSingleTicket}
         />

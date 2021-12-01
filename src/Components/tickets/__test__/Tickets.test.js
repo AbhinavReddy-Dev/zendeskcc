@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { server, rest } from "../../../testServer";
 import { Tickets } from "../Tickets";
 import { ListTickets } from "../ListTickets";
@@ -10,13 +10,56 @@ import {
   getTicketsUnSuccessfulRes3,
   getTicketsUnSuccessfulRes4,
   getTicketsUnSuccessfulRes5,
+  getTicketsUnSuccessfulRes6,
 } from "../../../testData";
+import { Button } from "../Button";
 
 describe("Tickets view rendering tests: ", () => {
   it("Successfully renders tickets", async () => {
     render(<ListTickets tickets={getTicketsSuccessfulRes.data.tickets} />);
 
     expect(screen.getByTestId("ticket-1")).toBeInTheDocument();
+  });
+
+  it("Successfully simulates a click on next", async () => {
+    // render(<Tickets />);
+    const mockOnClick = jest.fn();
+    const { findByTestId } = render(
+      <Button
+        onclick={mockOnClick}
+        testId={"next-button"}
+        text={"Next"}
+        disabledBool={false}
+      />
+    );
+    fireEvent.click(await findByTestId("next-button"));
+    expect(mockOnClick).toHaveBeenCalledTimes(1);
+    render(<Tickets />);
+    expect(await screen.findByTestId("ticket-26")).toBeInTheDocument();
+  });
+  it("Successfully simulates a click on a ticket card", async () => {
+    // render(<Tickets />);
+    // const mockOnClick = jest.fn();
+    render(<Tickets />);
+    fireEvent.click(await screen.findByTestId("ticket-1"));
+    // expect(mockOnClick).toHaveBeenCalledTimes(1);
+    expect(await screen.findByTestId("close-button")).toBeInTheDocument();
+    fireEvent.click(await screen.findByTestId("close-button"));
+  });
+
+  it("Successfully simulates a click on prev", async () => {
+    // render(<Tickets />);
+    const mockOnClick = jest.fn();
+    const { findByTestId } = render(
+      <Button
+        onclick={mockOnClick}
+        testId={"prev-button"}
+        text={"Previous"}
+        disabledBool={false}
+      />
+    );
+    fireEvent.click(await findByTestId("prev-button"));
+    expect(mockOnClick).toHaveBeenCalledTimes(1);
   });
 
   it("Successfully renders a message for no tickets when there are no tickets or ticekts is an empty array", async () => {
@@ -114,8 +157,24 @@ describe("Tickets view rendering tests: ", () => {
     expect(await screen.findByTestId("tickets-error")).toBeInTheDocument();
     expect(
       await screen.findByText(
-        "Internal Server Error, please try again or contact support."
+        "Service Unavailable, please try again or contact support."
       )
+    ).toBeInTheDocument();
+  });
+  it("Handles errors and displays error message when error in fetching tickets- 6", async () => {
+    server.use(
+      rest.get("http://localhost/api/getTickets", (_req, res, ctx) => {
+        return res(
+          ctx.status(getTicketsUnSuccessfulRes6.status),
+          ctx.json(getTicketsUnSuccessfulRes6)
+        );
+      })
+    );
+    render(<Tickets />);
+
+    expect(await screen.findByTestId("tickets-error")).toBeInTheDocument();
+    expect(
+      await screen.findByText("Forbidden, please try again or contact support.")
     ).toBeInTheDocument();
   });
 });

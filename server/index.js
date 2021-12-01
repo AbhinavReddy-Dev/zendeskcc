@@ -15,6 +15,7 @@ app.get("/api/getTickets", async (req, res) => {
     res.setHeader("Content-Type", "application/json");
     const { status, data, statusText, ok } = await getTicketsPerPg(reqBody);
     res.status(status);
+    res.statusMessage = statusText;
     res.json({ ok, status, statusText, data });
     return res;
   } catch (err) {
@@ -35,6 +36,7 @@ app.get("/api/getTicketByID", async (req, res) => {
     res.setHeader("Content-Type", "application/json");
     const { data, status, statusText, ok } = await getTicketByID(reqBody);
     res.status(status);
+    res.statusMessage = statusText;
     res.json({ ok, status, statusText, data });
     return res;
   } catch (err) {

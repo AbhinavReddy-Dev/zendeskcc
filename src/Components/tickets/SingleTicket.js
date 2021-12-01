@@ -30,25 +30,25 @@ export const SingleTicket = ({ ticket = {}, closeSingleTicket }) => {
     setSingleTicket(res.data.ticket);
   }
 
-  async function getTicketByID(id = null) {
-    setLoadingTicket(true);
-    await axios
-      .get(`/api/getTicketByID?tcktId=${id}`)
-      .then((response) => {
-        handleStateUpdateFromRes(response.data);
-      })
-      .catch((err) => {
-        setErrorLoadingTicket({
-          bool: true,
-          message: handleErrorMessage(err.response),
-        });
-      });
-
-    setLoadingTicket(false);
-  }
-
   useEffect(() => {
+    async function getTicketByID(id = null) {
+      setLoadingTicket(true);
+      await axios
+        .get(`/api/getTicketByID?tcktId=${id}`)
+        .then((response) => {
+          handleStateUpdateFromRes(response.data);
+        })
+        .catch((err) => {
+          setErrorLoadingTicket({
+            bool: true,
+            message: handleErrorMessage(err.response),
+          });
+        });
+
+      setLoadingTicket(false);
+    }
     getTicketByID(ticket.id);
+    return setSingleTicket({});
     // eslint-disable-next-line
   }, []);
 
@@ -83,6 +83,7 @@ export const SingleTicket = ({ ticket = {}, closeSingleTicket }) => {
           fontSize: "16px",
         }}
         onClick={closeSingleTicket}
+        data-testid="close-button"
       >
         X
       </button>
@@ -169,11 +170,11 @@ export const SingleTicket = ({ ticket = {}, closeSingleTicket }) => {
                 ))}
             </div>
             <p style={{ color: "#fff", maxWidth: "100%", fontSize: "12px" }}>
-              updated:{" "}
+              updated:
               {new Date(singleTicket.updated_at).toDateString().slice(3)}
             </p>
             <p style={{ color: "#fff", maxWidth: "100%", fontSize: "12px" }}>
-              created:{" "}
+              created:
               {new Date(singleTicket.created_at).toDateString().slice(3)}
             </p>
           </div>
