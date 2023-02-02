@@ -13,7 +13,6 @@ describe("Tickets view rendering tests: ", () => {
         selectTicket={handleClick}
       />
     );
-
     expect(screen.getByTestId("ticket-1")).toBeInTheDocument();
     fireEvent.click(await screen.findByTestId("ticket-1"));
     expect(handleClick).toHaveBeenCalledTimes(1);

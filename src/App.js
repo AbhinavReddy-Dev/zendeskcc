@@ -10,12 +10,10 @@ function App() {
           2022 Zendesk Coding Challenge - Tickets Viewer
         </h3>
       </header>
-
       <main
         style={{
           margin: "1rem auto",
-        }}
-      >
+        }}>
         <Tickets />
       </main>
     </div>

@@ -6,6 +6,8 @@ import { Button } from "./Button";
 import { ListTickets } from "./ListTickets";
 import { SingleTicket } from "./SingleTicket";
 
+import { getTicketsSuccessfulRes } from "../../testData";
+
 export const Tickets = () => {
   const TICKETS_PER_PAGE = 25;
 
@@ -64,28 +66,30 @@ export const Tickets = () => {
     });
   }
   function handleStateUpdateFromRes(res) {
+    console.log(res);
     setState({
       ...state,
-      tickets: res.data.tickets,
+      tickets: res.tickets,
       ticketsLoading: false,
-      hasMore: res.data.meta && res.data.meta.has_more,
+      hasMore: res.meta && res.meta.has_more,
       errorTickets: false,
     });
   }
 
   async function getTickets(type = "") {
     setState({ ...state, ticketsLoading: true });
-    await axios
-      .get(`/api/getTickets?perPg=${TICKETS_PER_PAGE}&link=${type}`)
-      .then((response) => {
-        handleStateUpdateFromRes(response.data);
-        setCurrPage(
-          currPage + (type === "prev" ? -1 : type === "next" ? +1 : +0)
-        );
-      })
-      .catch((err) => {
-        handleStateFromResError(err.response);
-      });
+    // await axios
+    //   .get(`/api/getTickets?perPg=${TICKETS_PER_PAGE}&link=${type}`)
+    //   .then((response) => {
+    //     handleStateUpdateFromRes(response.data);
+    //     setCurrPage(
+    //       currPage + (type === "prev" ? -1 : type === "next" ? +1 : +0)
+    //     );
+    //   })
+    //   .catch((err) => {
+    //     handleStateFromResError(err.response);
+    //   });
+    handleStateUpdateFromRes(getTicketsSuccessfulRes.data);
   }
 
   const handleSelectTicket = (tckt) => {
@@ -130,13 +134,11 @@ export const Tickets = () => {
           color: "#fff",
           fontWeight: "normal",
           marginBottom: "2rem",
-        }}
-      >
+        }}>
         Tickets
       </h1>
       {/* To view either list of tickets or a single ticket */}
-      {/* {!singleTicketObj.singleTicketView ? ( */}
-      {!singleTicketObj.singleTicketView && (
+      {!singleTicketObj.singleTicketView ? (
         <>
           <div
             style={{
@@ -147,16 +149,14 @@ export const Tickets = () => {
               padding: "auto",
               display: "flex",
               flexDirection: "column",
-            }}
-          >
+            }}>
             {/* Loading tickets */}
             {state.ticketsLoading === true && (
               <p
                 style={{
                   margin: "auto",
                   color: "#fff",
-                }}
-              >
+                }}>
                 Loading tickets...
               </p>
             )}
@@ -178,8 +178,7 @@ export const Tickets = () => {
                     margin: "auto",
                     color: "#fff",
                   }}
-                  data-testid="tickets-empty"
-                >
+                  data-testid="tickets-empty">
                   No Tickets Found.
                 </p>
               )}
@@ -194,15 +193,13 @@ export const Tickets = () => {
                   flexDirection: "column",
                   textAlign: "center",
                 }}
-                data-testid={"tickets-error"}
-              >
+                data-testid={"tickets-error"}>
                 <span
                   role="img"
                   aria-label="warning"
                   style={{
                     marginBottom: "1rem",
-                  }}
-                >
+                  }}>
                   ⚠️
                 </span>
                 {state.errorText}
@@ -221,8 +218,7 @@ export const Tickets = () => {
               justifyContent: "space-between",
               height: "fit-content",
               paddingBottom: "5rem",
-            }}
-          >
+            }}>
             <Button
               onclick={prev}
               disabledBool={currPage === 1}
@@ -235,8 +231,7 @@ export const Tickets = () => {
                 margin: "5px 10px",
                 textAlign: "center",
               }}
-              data-testid="page-no"
-            >
+              data-testid="page-no">
               {currPage}
             </p>
 
@@ -248,17 +243,14 @@ export const Tickets = () => {
             />
           </div>
         </>
-      )}
-      {/* // ) : ( */}
-      {/* // Single ticket component */}
-      {singleTicketObj.singleTicketView && (
+      ) : (
+        // Single ticket component
         <SingleTicket
           data-testid="single-ticket-comp"
           ticket={singleTicketObj.singleTicket}
           closeSingleTicket={handleCloseSingleTicket}
         />
       )}
-      {/* // )} */}
     </>
   );
 };

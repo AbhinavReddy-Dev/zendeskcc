@@ -2,6 +2,8 @@ const axios = require("axios");
 const { userName, password } = require("../config");
 const { urls } = require("./urls");
 
+const getTicketsSuccessfulRes = require("../testData");
+
 const TICKETS_PER_PAGE = 25;
 let previousLink = "",
   nextLink = "";
@@ -15,23 +17,25 @@ const createTicketsURL = (link = "", cntPerPg = TICKETS_PER_PAGE) => {
 };
 
 const getTicketsPerPg = async (reqBody, uName = userName, pWord = password) => {
-  const cntPerPg = reqBody.perPg;
-  const link = reqBody.link;
+  // const cntPerPg = reqBody.perPg;
+  // const link = reqBody.link;
 
   try {
-    let ticketsData = await axios.get(createTicketsURL(link, cntPerPg), {
-      auth: {
-        username: uName,
-        password: pWord,
-      },
-    });
+    // let ticketsData = await axios.get(createTicketsURL(link, cntPerPg), {
+    //   auth: {
+    //     username: uName,
+    //     password: pWord,
+    //   },
+    // });
 
-    previousLink = ticketsData.data.links.prev;
-    nextLink = ticketsData.data.links.next;
+    // previousLink = ticketsData.data.links.prev;
+    // nextLink = ticketsData.data.links.next;
 
-    ticketsData["ok"] = true;
-    return ticketsData;
+    // ticketsData["ok"] = true;
+    return getTicketsSuccessfulRes;
   } catch (err) {
+    // return getTicketsSuccessfulRes;
+
     return {
       status: err.response.status,
       statusText: err.response.statusText,

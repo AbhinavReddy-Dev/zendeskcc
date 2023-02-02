@@ -6,6 +6,7 @@ export const TicketCard = ({ ticket = {}, selectTicket }) => {
   const selcTicket = () => selectTicket(ticketState);
 
   useEffect(() => {
+    console.log(ticket);
     setTicketState(ticket);
     // eslint-disable-next-line
   }, []);
@@ -25,8 +26,7 @@ export const TicketCard = ({ ticket = {}, selectTicket }) => {
         cursor: "pointer",
       }}
       onClick={selcTicket}
-      data-testid={`ticket-${ticketState.id}`}
-    >
+      data-testid={`ticket-${ticketState.id}`}>
       <p style={{ color: "#fff", width: "25px" }}> {ticketState.id}</p>
       <p
         style={{
@@ -34,8 +34,7 @@ export const TicketCard = ({ ticket = {}, selectTicket }) => {
           width: "60px",
           fontStyle: "oblique",
           textAlign: "center",
-        }}
-      >
+        }}>
         {ticketState.status}
       </p>
 
